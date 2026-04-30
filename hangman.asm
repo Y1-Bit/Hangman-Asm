@@ -7,6 +7,7 @@ section .data
   lost_message db "Game over! You ran out of attempts", 10, 0
   incorrect_letter db "Wrong guess! Letter not found in the word.", 10, 0
   attempts db 6
+  attempts_left db "Attempts left: %d", 10, 0
 
 
 section .bss
@@ -33,6 +34,11 @@ main:
   mov r14, rax
 
   general_loop:
+
+    mov rdi, attempts_left
+    movzx rsi, byte [attempts]
+    xor eax, eax
+    call printf
 
     mov rdi, curr_state
     xor eax, eax
