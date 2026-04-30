@@ -1,0 +1,13 @@
+# Object files
+*.o
+*.olear
+
+# Binaries
+hangman
+count_letter
+func
+greet
+hello
+
+# Unrelated assembly exercises
+extras/
