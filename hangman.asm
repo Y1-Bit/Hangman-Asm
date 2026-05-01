@@ -1,8 +1,6 @@
 section .data
   curr_state db "Current progress: ", 0, 0
-  display db "______", 10, 0
   ask_letter db "Enter a letter: ", 0
-  secret_word db "banana", 0
   win_message db "Congratulations! You guessed the word: %s", 10, 0
   lost_message db "Game over! You ran out of attempts", 10, 0
   incorrect_letter db "Wrong guess! Letter not found in the word.", 10, 0
@@ -12,6 +10,8 @@ section .data
 
 section .bss
   letter resb 256
+  secret_word resb 64
+  display resb 64
 
 section .text
   global main
@@ -19,6 +19,7 @@ section .text
   extern stdin
   extern printf
   extern strlen
+  extern load_random_word
 
 
 main:
@@ -26,12 +27,34 @@ main:
   push r12
   push r13
   push r14
+  push r15
+
+
+  call load_random_word
+  mov r15, rax
 
   xor rcx, rcx
 
-  mov rdi, secret_word
-  call strlen
-  mov r14, rax
+  prepare_random_word:
+    mov al, [r15 + rcx]
+    mov [secret_word + rcx], al
+    cmp al, 0
+    je done_prepare
+    mov byte [display + rcx], '_'
+    inc rcx
+    jmp prepare_random_word
+
+  done_prepare:
+    mov byte [display + rcx], 10
+
+    mov rdi, win_message
+    mov rsi, secret_word
+    xor eax, eax
+    call printf
+
+    mov rdi, r15
+    call strlen
+    mov r14, rax
 
   general_loop:
 
@@ -110,6 +133,7 @@ win:
   jmp exit
 
 exit:
+  pop r15
   pop r14
   pop r13
   pop r12

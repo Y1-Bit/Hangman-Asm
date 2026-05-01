@@ -1,26 +1,16 @@
 section .data
   filename db "words.txt", 0
-  total_words db "Words total: %d",10, 0
-  random_index db "Random index: %d", 10, 0
-  word_index db "Word index position: %d", 10, 0
-  random_word db "Random word: %s", 10, 0
 
 section .bss
   buffer resb 1024
 
 section .text
-  global main
-  extern fgets
-  extern stdin
-  extern printf
-  extern strlen
+  global load_random_word
 
-
-main:
+load_random_word:
   push rbp
   push r13
   push r14
-  push r15
 
   mov rax, 2
   mov rdi, filename
@@ -36,10 +26,6 @@ main:
 
   mov r13, rax
 
-  mov rdi, buffer
-  xor eax, eax
-  call printf
-
   xor rcx, rcx
   xor rbx, rbx
 
@@ -49,7 +35,7 @@ main:
     je exit_loop
     cmp al, 10
     jne move_next
-    inc rbx
+    inc rbx ; word count
     jmp move_next
 
   move_next:
@@ -57,11 +43,6 @@ main:
     jmp count_loop
 
   exit_loop:
-    mov rdi, total_words
-    mov rsi, rbx
-    xor eax, eax
-    call printf
-
     mov rax, 201
     xor rdi, rdi
     syscall
@@ -69,12 +50,7 @@ main:
     xor rdx, rdx
     div rbx
 
-    mov r14, rdx
-
-    mov rdi, random_index
-    mov rsi, r14
-    xor eax, eax
-    call printf
+    mov r14, rdx ; random index
 
     xor rcx, rcx
     xor rbx, rbx
@@ -113,7 +89,6 @@ main:
     inc rdx
     jmp move_to_word_end
 
-
   trim:
     mov byte [buffer + rdx] , 0
     jmp return
@@ -123,22 +98,10 @@ main:
     jmp get_random_word
 
   return:
-    mov r15, rcx
+    lea rax, [buffer + rcx] ; random word
 
-    mov rdi, word_index
-    mov rsi, r15
-    xor eax, eax
-    call printf
-
-    mov rdi, random_word
-    lea rsi, [buffer + r15]
-    xor eax, eax
-    call printf
-
-    pop r15
     pop r14
     pop r13
     pop rbp
 
-    xor eax, eax
     ret
