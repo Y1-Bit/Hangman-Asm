@@ -5,7 +5,7 @@ extern  fread
 extern  fclose
 extern  printf
 
-global  main
+global  read_file
 
 section .rodata
 path:    db "words.txt", 0
@@ -17,7 +17,7 @@ section .bss
 buffer: resb 4096
 
 section .text
-main:
+read_file:
   push rbp
   push rbx
   push r12

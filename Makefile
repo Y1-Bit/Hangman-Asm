@@ -4,7 +4,7 @@ CC := gcc
 BUILD_DIR := build
 SRC_DIR := src
 TARGET := $(BUILD_DIR)/hangman-asm
-OBJS := $(BUILD_DIR)/main.o $(BUILD_DIR)/display.o
+OBJS := $(BUILD_DIR)/main.o $(BUILD_DIR)/display.o $(BUILD_DIR)/readfile.o
 
 .PHONY: all run clean
 
