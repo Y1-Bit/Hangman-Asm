@@ -1,4 +1,5 @@
 %include "../include/config.inc"
+default rel
 
 extern  printf
 global  call_test
@@ -11,7 +12,7 @@ call_test:
     push rbp
 
     mov rsi, rdi
-    lea rdi, [rel test_message]
+    lea rdi, [test_message]
     xor eax, eax
     call printf wrt ..plt
 
