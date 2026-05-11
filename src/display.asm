@@ -1,24 +1,39 @@
-%include "../include/config.inc"
 default rel
 
-extern  printf
-global  call_test
+global print_file_read_error
+global print_file_empty_error
+global print_success
+
+extern printf
 
 section .rodata
-test_message: db "Hello World!", 10, 0
+file_read_error_msg:  db "Could not read words file", 10, 0
+file_empty_error_msg: db "Words file is empty", 10, 0
+success_msg:          db "Success", 10, 0
 
 section .text
-call_test:
-    push rbp
-    mov rbp, rsp
 
-    mov rsi, rdi
-    lea rdi, [test_message]
-    xor eax, eax
-    call printf wrt ..plt
+print_file_read_error:
+  lea rdi, [file_read_error_msg]
+  jmp print_message
 
-    mov rsp, rbp
-    pop rbp
-    ret
+print_file_empty_error:
+  lea rdi, [file_empty_error_msg]
+  jmp print_message
+
+print_success:
+  lea rdi, [success_msg]
+  jmp print_message
+
+print_message:
+  push rbp
+  mov  rbp, rsp
+
+  xor eax, eax
+  call printf wrt ..plt
+
+  mov rsp, rbp
+  pop rbp
+  ret
 
 section .note.GNU-stack noalloc noexec nowrite progbits
