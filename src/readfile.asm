@@ -19,6 +19,8 @@ buffer: resb 4096
 section .text
 read_file:
   push rbp
+  mov rbp, rsp
+
   push rbx
   push r12
 
@@ -65,6 +67,8 @@ read_file:
 .exit:
   pop r12
   pop rbx
+
+  mov rsp, rbp
   pop rbp
   ret
 

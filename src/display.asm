@@ -10,12 +10,14 @@ test_message: db "Hello World!", 10, 0
 section .text
 call_test:
     push rbp
+    mov rbp, rsp
 
     mov rsi, rdi
     lea rdi, [test_message]
     xor eax, eax
     call printf wrt ..plt
 
+    mov rsp, rbp
     pop rbp
     ret
 

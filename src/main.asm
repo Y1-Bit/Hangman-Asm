@@ -7,11 +7,14 @@ global  main
 section .text
 main:
   push rbp
+  mov rbp, rsp
 
   call call_test
   call read_file
 
   mov eax, EXIT_SUCCESS
+
+  mov rsp, rbp
   pop rbp
   ret
 
